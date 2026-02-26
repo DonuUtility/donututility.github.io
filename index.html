@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DonutUtility — Maximum Power. Zero Bloat.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0b12;
+    --card: #16131f;
+    --card2: #1c1828;
+    --purple: #7c3aed;
+    --purple-light: #a855f7;
+    --green: #16a34a;
+    --red: #dc2626;
+    --text: #ffffff;
+    --muted: #9ca3af;
+    --border: rgba(124,58,237,0.18);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAVBAR ─────────────────────────────────── */
+  nav {
+    border-top: 2px solid var(--purple);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,11,18,0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .logo-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--purple-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 0 18px rgba(124,58,237,0.55);
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: var(--text);
+    text-transform: uppercase;
+  }
+
+  /* ── HERO ────────────────────────────────────── */
+  .hero {
+    position: relative;
+    text-align: center;
+    padding: 110px 24px 90px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    width: 700px;
+    height: 500px;
+    background: radial-gradient(ellipse at center, rgba(124,58,237,0.22) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero > * { position: relative; z-index: 1; }
+
+  .badge-opensource {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1.5px solid rgba(22,163,74,0.6);
+    color: #4ade80;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+    background: rgba(22,163,74,0.08);
+  }
+
+  .badge-opensource::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 8px #4ade80;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .version-badge {
+    display: inline-block;
+    color: var(--purple-light);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 26px;
+    background: rgba(124,58,237,0.12);
+    border: 1px solid rgba(124,58,237,0.3);
+    padding: 5px 16px;
+    border-radius: 999px;
+  }
+
+  h1 {
+    font-size: clamp(42px, 7vw, 88px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 22px;
+    background: linear-gradient(160deg, #ffffff 30%, #c4b5fd 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    color: var(--muted);
+    font-size: clamp(15px, 2.2vw, 18px);
+    font-weight: 400;
+    max-width: 520px;
+    margin: 0 auto 38px;
+    line-height: 1.6;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--purple), var(--purple-light));
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 16px 40px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 32px rgba(124,58,237,0.45);
+    transition: transform 0.18s, box-shadow 0.18s;
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 40px rgba(124,58,237,0.6);
+  }
+
+  .cta-btn svg { flex-shrink: 0; }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 64px;
+    flex-wrap: wrap;
+  }
+
+  .stat { text-align: center; }
+  .stat-num {
+    font-size: 32px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--purple-light), #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label { color: var(--muted); font-size: 13px; font-weight: 500; margin-top: 3px; }
+
+  .divider {
+    width: 1px;
+    height: 40px;
+    background: var(--border);
+    align-self: center;
+  }
+
+  /* ── FEATURES ────────────────────────────────── */
+  .features {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  .section-label {
+    text-align: center;
+    color: var(--purple-light);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    margin-bottom: 42px;
+    letter-spacing: -0.01em;
+  }
+
+  /* TAB SWITCHER */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .tab-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 9px 22px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .tab-btn:hover { color: #fff; border-color: rgba(124,58,237,0.5); }
+
+  .tab-btn.active {
+    background: var(--purple);
+    border-color: var(--purple);
+    color: #fff;
+    box-shadow: 0 0 18px rgba(124,58,237,0.4);
+  }
+
+  /* CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    animation: fadeIn 0.25s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 22px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+
+  .card:hover {
+    border-color: rgba(124,58,237,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+  }
+
+  .card-left { flex: 1; min-width: 0; }
+
+  .card-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #fff;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .badge {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 999px;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  .badge-safe {
+    background: rgba(22,163,74,0.15);
+    color: #4ade80;
+    border: 1px solid rgba(22,163,74,0.4);
+  }
+
+  .badge-unsafe {
+    background: rgba(220,38,38,0.15);
+    color: #f87171;
+    border: 1px solid rgba(220,38,38,0.4);
+  }
+
+  .badge-info {
+    background: rgba(124,58,237,0.15);
+    color: #c4b5fd;
+    border: 1px solid rgba(124,58,237,0.4);
+  }
+
+  /* ── FOOTER ──────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  footer span { color: var(--purple-light); }
+
+  /* ── RESPONSIVE ─────────────────────────────── */
+  @media (max-width: 600px) {
+    .hero-stats { gap: 28px; }
+    .divider { display: none; }
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="#">
+      <div class="logo-circle">🍩</div>
+      <span class="logo-text">DonutUtility</span>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge-opensource">COMPLETELY OPEN SOURCE</div>
+  <br/>
+  <div class="version-badge">VERSION 1.21.4 – 1.21.11</div>
+  <h1>Maximum Power.<br/>Zero Bloat.</h1>
+  <p class="hero-sub">A lightweight Minecraft utility client built for players who demand peak performance without the overhead. Every module, purpose-built.</p>
+  <a class="cta-btn" href="#">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 15V3m0 12-4-4m4 4 4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17"/></svg>
+    Download .JAR
+  </a>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">120+</div>
+      <div class="stat-label">Modules</div>
+    </div>
+    <div class="divider"></div>
+    <div class="stat">
+      <div class="stat-num">1.21.11</div>
+      <div class="stat-label">Latest MC</div>
+    </div>
+    <div class="divider"></div>
+    <div class="stat">
+      <div class="stat-num">Free</div>
+      <div class="stat-label">Forever</div>
+    </div>
+    <div class="divider"></div>
+    <div class="stat">
+      <div class="stat-num">MIT</div>
+      <div class="stat-label">License</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="section-label">Modules</div>
+  <h2 class="section-title">Built for Every Playstyle</h2>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="combat">⚔️ Combat</button>
+    <button class="tab-btn" data-tab="visuals">👁 Visuals</button>
+    <button class="tab-btn" data-tab="world">🌍 World</button>
+    <button class="tab-btn" data-tab="misc">⚙️ Misc</button>
+  </div>
+
+  <div class="cards-grid" id="cards-container"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2024 <span>DonutUtility</span> — Open source under the MIT License. Not affiliated with Mojang or Microsoft.</p>
+</footer>
+
+<script>
+  const modules = {
+    combat: [
+      { name: "KillAura", desc: "Automatically attacks nearby entities within a configurable range and angle. Supports single, multi, and switch target modes.", safe: false },
+      { name: "Criticals", desc: "Forces critical hits by making the player slightly airborne on every attack, dealing maximum damage without a jump.", safe: false },
+      { name: "AutoSword", desc: "Automatically switches to the highest-damage sword or axe in your hotbar before attacking an enemy.", safe: true },
+      { name: "Velocity", desc: "Reduces or eliminates knockback received from enemy attacks. Configurable horizontal and vertical reduction percentages.", safe: false },
+      { name: "Reach", desc: "Extends your melee attack range beyond the default 3 blocks. Supports configurable reach values up to server tolerances.", safe: false },
+      { name: "AntiBot", desc: "Detects and filters out bot entities from KillAura targets using movement patterns and entity metadata analysis.", safe: true },
+      { name: "Surround", desc: "Quickly places obsidian or blast-resistant blocks around your feet for crystal PvP defense in a single tick.", safe: false },
+      { name: "AutoTotem", desc: "Automatically moves totems of undying into your offhand slot when your HP drops below a configurable threshold.", safe: true },
+    ],
+    visuals: [
+      { name: "ESP", desc: "Renders colored outlines or boxes around players, mobs, and items through walls. Supports category-based color coding.", safe: true },
+      { name: "Tracers", desc: "Draws a line from the center of your screen to tracked entities so you can locate them across any distance.", safe: true },
+      { name: "FullBright", desc: "Forces maximum brightness everywhere, eliminating the need for night vision potions or torches in dark environments.", safe: true },
+      { name: "Xray", desc: "Renders specified ore blocks through terrain by making surrounding blocks transparent. Fully configurable block list.", safe: false },
+      { name: "ChestESP", desc: "Highlights chests, shulker boxes, barrels, and other containers through walls with customizable glow colors.", safe: true },
+      { name: "Nametags", desc: "Replaces vanilla nametags with enhanced, always-visible tags showing health, armor, ping, and held item info.", safe: true },
+      { name: "Breadcrumbs", desc: "Draws a trail behind your movement path so you can trace your steps and navigate back through caves or terrain.", safe: true },
+      { name: "StorageESP", desc: "Shows the contents of nearby containers as a tooltip overlay without needing to open them.", safe: false },
+    ],
+    world: [
+      { name: "Scaffold", desc: "Automatically places blocks beneath your feet as you walk forward, enabling quick bridging across gaps without looking down.", safe: false },
+      { name: "AutoMine", desc: "Continuously mines the targeted block and re-targets the next block in a vein, maximizing ore collection speed.", safe: false },
+      { name: "AutoFarm", desc: "Automatically harvests and replants crops within a configurable radius when you hold the appropriate tool.", safe: true },
+      { name: "Nuker", desc: "Mines all blocks within a spherical radius around the player simultaneously. Great for clearing large areas fast.", safe: false },
+      { name: "NoFall", desc: "Prevents fall damage by placing a block below you before landing or sending packets to negate fall velocity.", safe: false },
+      { name: "Flight", desc: "Enables creative-style flight in survival mode using configurable speed, mode, and anti-kick bypass techniques.", safe: false },
+      { name: "Jesus", desc: "Allows you to walk on water and lava surfaces as if they were solid ground by exploiting movement packets.", safe: false },
+      { name: "AutoSign", desc: "Automatically writes a pre-configured message on every sign you place, saving time in large build projects.", safe: true },
+    ],
+    misc: [
+      { name: "AutoRespawn", desc: "Automatically clicks the respawn button immediately after death, minimizing downtime during PvP or grind sessions.", safe: true },
+      { name: "ChatFilter", desc: "Filters spam, advertising, and configured keywords from the chat window. Supports regex patterns.", safe: true },
+      { name: "Spammer", desc: "Sends a looping configurable message to chat or a player at set intervals. Supports multi-line message rotation.", safe: false },
+      { name: "ClickGUI", desc: "A sleek in-game overlay for managing and configuring all modules, with search, categories, and keybind support.", safe: true },
+      { name: "HUD", desc: "Displays a customizable on-screen heads-up display showing active modules, FPS, coordinates, armor durability, and more.", safe: true },
+      { name: "FakePlayer", desc: "Spawns a dummy player entity at your current location to test module behavior and hitbox interactions safely.", safe: true },
+      { name: "Notifications", desc: "Shows toast-style pop-ups when modules toggle on/off, enemy players come into range, or inventory events occur.", safe: true },
+      { name: "MacroManager", desc: "Bind sequences of keystrokes, commands, or module toggles to a single key for rapid in-game automation.", safe: false },
+    ]
+  };
+
+  function renderCards(tab) {
+    const container = document.getElementById('cards-container');
+    container.innerHTML = '';
+    // Re-trigger animation
+    container.style.animation = 'none';
+    container.offsetHeight; // reflow
+    container.style.animation = '';
+
+    modules[tab].forEach(mod => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      const badgeClass = mod.safe ? 'badge-safe' : 'badge-unsafe';
+      const badgeText = mod.safe ? 'SAFE' : 'UNSAFE';
+      card.innerHTML = `
+        <div class="card-left">
+          <div class="card-name">${mod.name}</div>
+          <div class="card-desc">${mod.desc}</div>
+        </div>
+        <span class="badge ${badgeClass}">${badgeText}</span>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCards(btn.dataset.tab);
+    });
+  });
+
+  // Initial render
+  renderCards('combat');
+</script>
+</body>
+</html>
